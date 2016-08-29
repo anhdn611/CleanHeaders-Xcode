@@ -164,7 +164,7 @@
 
     // Add a new line to make it look clean (if needed)
     if (endOfFileWithNewLine) {
-      [headerRows addObject:@"\n"];
+      [headerRows addObject:@"\r"];
     }
     // replace it in the array of all lines.
     [lines replaceObjectsInRange:NSMakeRange(initalIndex,
