@@ -138,7 +138,30 @@
   // If both the indices are set it means that we have a header section in the
   // file and it needs replacing after sorting.
   if (lastIndex >= 0 && initalIndex >= 0) {
-    [headerRows sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    [headerRows sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        NSString *string1 = [obj1 stringValue];
+        NSString *string2 = [obj2 stringValue];
+        NSComparisonResult result = NSOrderedAscending;
+        if (([string1 hasPrefix:@"#import <"] && [string2 hasPrefix:@"#import <"] )||
+            ([string1 hasPrefix:@"#import \""] && [string2 hasPrefix:@"#import \""])) {
+            result = [string1 localizedCaseInsensitiveCompare:string2];
+        } else {
+            if ([string1 hasPrefix:@"#import <"]) {
+                result = NSOrderedAscending;
+            } else {
+                result = NSOrderedDescending;
+            }
+        }
+        return result;
+    }];
+      NSInteger lastframeworkHeader = 0;
+      while ([headerRows[lastframeworkHeader] hasPrefix:@"#import <"]) {
+          lastframeworkHeader++;
+      }
+      if (lastframeworkHeader > 0) {
+          [headerRows insertObject:@"\r" atIndex:lastframeworkHeader];
+      }
+
     // Add a new line to make it look clean (if needed)
     if (endOfFileWithNewLine) {
       [headerRows addObject:@"\n"];
