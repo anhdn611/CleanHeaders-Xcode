@@ -1,3 +1,6 @@
+Based on the greats project CleanHeaders I created this repo to maintain the coach mark projects with the idea:
+• group by `framework` or `project file` and add a breakline between them
+
 # CleanHeaders
 
 An Xcode plug-in to format your import headers in a systematic manner. It simply removes duplicates, spaces and sorts them alphabetically making it much more easier to read and avoid duplicate imports. Works with `@imports`, `#include`, `#import` and `import`.
